@@ -56,4 +56,4 @@ def get_products_collection():
     return Database.get_collection("products")
 
 def get_pet_profiles_collection():
-    return Database.get_collection("pet_profile")
+    return Database.get_collection("pet profile")
