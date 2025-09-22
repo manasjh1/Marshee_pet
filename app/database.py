@@ -11,7 +11,7 @@ class Database:
 
     @classmethod
     def initialize(cls):
-        """Initialize MongoDB connection"""
+        """Initialize MongoDB  connection"""
         username = os.getenv("MONGODB_USERNAME")
         password = os.getenv("MONGODB_PASSWORD")
         cluster = os.getenv("MONGODB_CLUSTER")
@@ -51,9 +51,8 @@ class Database:
         if cls.client:
             cls.client.close()
 
-# Collection shortcuts
 def get_products_collection():
     return Database.get_collection("products")
 
 def get_pet_profiles_collection():
-    return Database.get_collection("pet profile")
+    return Database.get_collection("pet profile")  

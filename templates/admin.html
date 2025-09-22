@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Product Management - Complete</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 20px;
+            background: #f8f9fa;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-section {
+            margin-bottom: 40px;
+            padding: 25px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            background: #f8f9fa;
+        }
+
+        .section-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #bdc3c7 0%, #2c3e50 100%);
+        }
+
+        .variant-item, .safety-item {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .remove-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .add-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border-left: 5px solid #667eea;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .tag {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .error {
+            background: #e74c3c;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .success {
+            background: #27ae60;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+        }
+
+        @media (max-width: 768px) {
+            .form-row, .form-row-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🐾 Pet Product Management System</h1>
+            <p>Complete Product Management with ML Tag Generation</p>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('add-product')">Add Product</button>
+            <button class="tab" onclick="switchTab('product-list')">Product List</button>
+            <button class="tab" onclick="switchTab('debug')">Debug ML</button>
+        </div>
+
+        <!-- Add Product Tab -->
+        <div id="add-product" class="tab-content active">
+            <h2>Add Complete Product</h2>
+            <form id="product-form">
+                
+                <!-- Basic Information -->
+                <div class="form-section">
+                    <div class="section-title">Basic Information</div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="product_id">Product ID <span class="required">*</span></label>
+                            <input type="text" id="product_id" name="product_id" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="sku">SKU <span class="required">*</span></label>
+                            <input type="text" id="sku" name="sku" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">Product Name <span class="required">*</span></label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="brand">Brand <span class="required">*</span></label>
+                            <input type="text" id="brand" name="brand" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pet_type">Pet Type <span class="required">*</span></label>
+                            <select id="pet_type" name="pet_type" required>
+                                <option value="">Select Pet Type</option>
+                                <option value="Dog">Dog</option>
+                                <option value="Cat">Cat</option>
+                                <option value="Bird">Bird</option>
+                                <option value="Fish">Fish</option>
+                                <option value="Rabbit">Rabbit</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="category">Category <span class="required">*</span></label>
+                            <select id="category" name="category" required>
+                                <option value="">Select Category</option>
+                                <option value="Food">Food</option>
+                                <option value="Treats">Treats</option>
+                                <option value="Toys">Toys</option>
+                                <option value="Accessories">Accessories</option>
+                                <option value="Grooming">Grooming</option>
+                                <option value="Health">Health & Medicine</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="sub_category">Sub Category</label>
+                            <input type="text" id="sub_category" name="sub_category">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" name="description" rows="4"></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="Product_type">Product Type</label>
+                            <input type="text" id="Product_type" name="Product_type">
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select id="status" name="status">
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pet Specifications -->
+                <div class="form-section">
+                    <div class="section-title">Pet Specifications</div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="age_group">Age Groups (comma separated)</label>
+                            <input type="text" id="age_group" name="age_group" placeholder="e.g., Puppy, Adult, Senior">
+                        </div>
+                        <div class="form-group">
+                            <label for="breed_size">Breed Sizes (comma separated)</label>
+                            <input type="text" id="breed_size" name="breed_size" placeholder="e.g., Small, Medium, Large, Giant">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ingredients">Ingredients (comma separated)</label>
+                        <input type="text" id="ingredients" name="ingredients" placeholder="e.g., chicken, rice, vegetables">
+                    </div>
+                </div>
+
+                <!-- Variants -->
+                <div class="form-section">
+                    <div class="section-title">Product Variants</div>
+                    <div id="variants-container">
+                        <div class="variant-item">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Variant ID</label>
+                                    <input type="text" name="variant_id_0" placeholder="e.g., 001-1KG">
+                                </div>
+                                <div class="form-group">
+                                    <label>Flavour</label>
+                                    <input type="text" name="flavour_0" placeholder="e.g., Chicken, Beef">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row-3">
+                                <div class="form-group">
+                                    <label>Weight (g)</label>
+                                    <input type="number" name="weight_g_0" placeholder="1000">
+                                </div>
+                                <div class="form-group">
+                                    <label>MRP</label>
+                                    <input type="number" name="mrp_0" placeholder="995">
+                                </div>
+                                <div class="form-group">
+                                    <label>Selling Price</label>
+                                    <input type="number" name="selling_price_0" placeholder="995">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Stock Quantity</label>
+                                    <input type="number" name="stock_quantity_0" placeholder="100">
+                                </div>
+                                <div class="form-group">
+                                    <label>Available</label>
+                                    <select name="is_available_0">
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="add-btn" onclick="addVariant()">Add Another Variant</button>
+                </div>
+
+                <!-- Safety Information -->
+                <div class="form-section">
+                    <div class="section-title">Safety Information</div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="allergens">Allergens (comma separated)</label>
+                            <input type="text" id="allergens" name="allergens" placeholder="e.g., Contains nuts, Dairy">
+                        </div>
+                        <div class="form-group">
+                            <label for="age_restrictions">Age Restrictions</label>
+                            <input type="text" id="age_restrictions" name="age_restrictions" placeholder="e.g., Suitable for puppies">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="weight_restrictions">Weight Restrictions</label>
+                            <input type="text" id="weight_restrictions" name="weight_restrictions" placeholder="e.g., For dogs 5-20kg">
+                        </div>
+                        <div class="form-group">
+                            <label for="health_warnings">Health Warnings (comma separated)</label>
+                            <input type="text" id="health_warnings" name="health_warnings" placeholder="e.g., Not suitable for pregnant pets">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Business Data -->
+                <div class="form-section">
+                    <div class="section-title">Business Data</div>
+                    
+                    <div class="form-row-3">
+                        <div class="form-group">
+                            <label for="popularity_score">Popularity Score (0-100)</label>
+                            <input type="number" id="popularity_score" name="popularity_score" min="0" max="100" placeholder="88">
+                        </div>
+                        <div class="form-group">
+                            <label for="avg_rating">Average Rating (0-5)</label>
+                            <input type="number" id="avg_rating" name="avg_rating" min="0" max="5" step="0.1" placeholder="4.4">
+                        </div>
+                        <div class="form-group">
+                            <label for="total_reviews">Total Reviews</label>
+                            <input type="number" id="total_reviews" name="total_reviews" min="0" placeholder="8">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="margin_percent">Margin Percent</label>
+                            <input type="number" id="margin_percent" name="margin_percent" min="0" max="100" placeholder="15">
+                        </div>
+                        <div class="form-group">
+                            <label for="is_premium">Premium Product</label>
+                            <select id="is_premium" name="is_premium">
+                                <option value="false">No</option>
+                                <option value="true">Yes</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn">Create Product with ML Tags</button>
+            </form>
+        </div>
+
+        <!-- Product List Tab -->
+        <div id="product-list" class="tab-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                <h2>Product Catalog</h2>
+                <button class="btn btn-secondary" onclick="loadProducts()">Refresh List</button>
+            </div>
+            
+            <div id="products-container">
+                <div class="loading">Loading products...</div>
+            </div>
+        </div>
+
+        <!-- Debug Tab -->
+        <div id="debug" class="tab-content">
+            <h2>Debug ML Tag Generation</h2>
+            <p>Test if ML tag generation is working properly.</p>
+            
+            <button class="btn" onclick="testMLTags()">Test ML Tags</button>
+            <div id="debug-results"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000/api/v1';
+        let variantCount = 0;
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+            
+            if (tabName === 'product-list') {
+                loadProducts();
+            }
+        }
+
+        function addVariant() {
+            variantCount++;
+            const container = document.getElementById('variants-container');
+            const variantHTML = `
+                <div class="variant-item">
+                    <button type="button" class="remove-btn" onclick="this.parentElement.remove()" style="float: right;">Remove</button>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Variant ID</label>
+                            <input type="text" name="variant_id_${variantCount}" placeholder="e.g., 001-2KG">
+                        </div>
+                        <div class="form-group">
+                            <label>Flavour</label>
+                            <input type="text" name="flavour_${variantCount}" placeholder="e.g., Chicken, Beef">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row-3">
+                        <div class="form-group">
+                            <label>Weight (g)</label>
+                            <input type="number" name="weight_g_${variantCount}" placeholder="2000">
+                        </div>
+                        <div class="form-group">
+                            <label>MRP</label>
+                            <input type="number" name="mrp_${variantCount}" placeholder="1995">
+                        </div>
+                        <div class="form-group">
+                            <label>Selling Price</label>
+                            <input type="number" name="selling_price_${variantCount}" placeholder="1995">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Stock Quantity</label>
+                            <input type="number" name="stock_quantity_${variantCount}" placeholder="50">
+                        </div>
+                        <div class="form-group">
+                            <label>Available</label>
+                            <select name="is_available_${variantCount}">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', variantHTML);
+        }
+
+        // Enhanced form submission
+        document.getElementById('product-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const data = {
+                variants: [],
+                safety: {},
+                business_data: {},
+                nutrition: {},
+                metadata: {}
+            };
+            
+            // Process all form fields
+            for (let [key, value] of formData.entries()) {
+                if (key === 'age_group' || key === 'breed_size' || key === 'ingredients') {
+                    data[key] = value ? value.split(',').map(item => item.trim()).filter(item => item) : [];
+                } else if (key.includes('allergens') || key.includes('health_warnings')) {
+                    const safetyKey = key.replace('_', '_');
+                    data.safety[safetyKey] = value ? value.split(',').map(item => item.trim()) : [];
+                } else if (key === 'age_restrictions' || key === 'weight_restrictions') {
+                    data.safety[key] = value;
+                } else if (['popularity_score', 'avg_rating', 'total_reviews', 'margin_percent', 'is_premium'].includes(key)) {
+                    if (key === 'is_premium') {
+                        data.business_data[key] = value === 'true';
+                    } else {
+                        data.business_data[key] = value ? parseFloat(value) : 0;
+                    }
+                } else if (!key.includes('variant_') && !key.includes('flavour_') && !key.includes('weight_g_') && 
+                          !key.includes('mrp_') && !key.includes('selling_price_') && 
+                          !key.includes('stock_quantity_') && !key.includes('is_available_')) {
+                    data[key] = value;
+                }
+            }
+
+            // Process variants
+            const variantIds = Array.from(formData.keys()).filter(key => key.startsWith('variant_id_'));
+            variantIds.forEach(idKey => {
+                const index = idKey.split('_').pop();
+                const variant = {
+                    variant_id: formData.get(`variant_id_${index}`) || '',
+                    flavour: formData.get(`flavour_${index}`) || '',
+                    weight_g: parseInt(formData.get(`weight_g_${index}`)) || 0,
+                    price: {
+                        currency: "INR",
+                        mrp: parseFloat(formData.get(`mrp_${index}`)) || 0,
+                        selling_price: parseFloat(formData.get(`selling_price_${index}`)) || 0
+                    },
+                    stock_quantity: parseInt(formData.get(`stock_quantity_${index}`)) || 0,
+                    is_available: formData.get(`is_available_${index}`) === 'true'
+                };
+                if (variant.variant_id) {
+                    data.variants.push(variant);
+                }
+            });
+
+            // Set defaults
+            data.status = data.status || 'active';
+
+            try {
+                const response = await fetch(`${API_BASE}/products/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    showMessage('Product created successfully with ML-generated tags!', 'success');
+                    
+                    if (result.ml_analysis && result.ml_analysis.generated_tags) {
+                        const tagHtml = result.ml_analysis.generated_tags.map(tag => 
+                            `<span class="tag">${tag}</span>`
+                        ).join('');
+                        
+                        showMessage(`Generated ${result.ml_analysis.tags_count} ML Tags: <div class="tags">${tagHtml}</div>`, 'success');
+                    }
+                    
+                    e.target.reset();
+                    variantCount = 0;
+                } else {
+                    const error = await response.json();
+                    showMessage(`Error: ${error.detail}`, 'error');
+                }
+            } catch (err) {
+                showMessage(`Network Error: ${err.message}`, 'error');
+            }
+        });
+
+        async function loadProducts() {
+            const container = document.getElementById('products-container');
+            container.innerHTML = '<div class="loading">Loading products...</div>';
+
+            try {
+                const response = await fetch(`${API_BASE}/products/`);
+                if (response.ok) {
+                    const result = await response.json();
+                    displayProducts(result.products);
+                } else {
+                    container.innerHTML = '<div class="error">Failed to load products</div>';
+                }
+            } catch (err) {
+                container.innerHTML = '<div class="error">Network error: ' + err.message + '</div>';
+            }
+        }
+
+        function displayProducts(products) {
+            const container = document.getElementById('products-container');
+            
+            if (products.length === 0) {
+                container.innerHTML = '<div class="loading">No products found. Add some products to get started!</div>';
+                return;
+            }
+
+            let html = '';
+            products.forEach(product => {
+                const tags = product.tags || [];
+                const tagHtml = tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+
+                html += `
+                    <div class="product-card">
+                        <h3>${product.name}</h3>
+                        <p><strong>Brand:</strong> ${product.brand} | <strong>Category:</strong> ${product.category} | <strong>Pet:</strong> ${product.pet_type}</p>
+                        ${product.description ? `<p><em>${product.description}</em></p>` : ''}
+                        
+                        ${tags.length > 0 ? `
+                            <div class="tags">${tagHtml}</div>
+                        ` : '<p style="color: #e74c3c;">❌ No ML tags generated</p>'}
+                        
+                        <div style="margin-top: 15px; font-size: 12px; color: #666;">
+                            <strong>ID:</strong> ${product.product_id} | 
+                            <strong>SKU:</strong> ${product.sku} | 
+                            <strong>Tags:</strong> ${tags.length} |
+                            <strong>Variants:</strong> ${product.variants?.length || 0}
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        async function testMLTags() {
+            const container = document.getElementById('debug-results');
+            container.innerHTML = '<div class="loading">Testing ML tag generation...</div>';
+
+            const testProduct = {
+                product_id: "TEST_ML",
+                sku: "TEST_ML",
+                brand: "Test Brand",
+                name: "Orthopedic Memory Foam Dog Bed for Senior Dogs with Arthritis",
+                pet_type: "Dog",
+                category: "Accessories",
+                sub_category: "Beds",
+                description: "Therapeutic memory foam bed designed for senior dogs with joint pain and arthritis. Provides pressure relief and supports healthy sleep.",
+                ingredients: [],
+                age_group: ["Senior"],
+                breed_size: ["Large", "Giant"]
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/products/preview-ml-tags`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(testProduct)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    const analysis = result.ml_analysis;
+                    
+                    let html = `
+                        <div class="success">
+                            <h3>✅ ML Tag Generation Working!</h3>
+                            <p><strong>Generated ${analysis.total_tags_generated} tags:</strong></p>
+                            <div class="tags">
+                                ${analysis.generated_tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                            </div>
+                            
+                            <h4 style="margin-top: 20px;">Confidence Levels:</h4>
+                            <p><strong>High:</strong> ${analysis.confidence_summary.high_confidence.join(', ') || 'None'}</p>
+                            <p><strong>Medium:</strong> ${analysis.confidence_summary.medium_confidence.join(', ') || 'None'}</p>
+                            <p><strong>Low:</strong> ${analysis.confidence_summary.low_confidence.join(', ') || 'None'}</p>
+                        </div>
+                    `;
+                    
+                    container.innerHTML = html;
+                } else {
+                    const error = await response.json();
+                    container.innerHTML = `<div class="error">❌ ML Error: ${error.detail}</div>`;
+                }
+            } catch (err) {
+                container.innerHTML = `<div class="error">❌ Network Error: ${err.message}<br><br>
+                    <strong>Troubleshooting:</strong><br>
+                    1. Make sure server is running: python -m uvicorn app.main:app --reload<br>
+                    2. Check if sentence-transformers is installed: pip install sentence-transformers<br>
+                    3. Verify ML service is working: python debug_ml_tags.py
+                </div>`;
+            }
+        }
+
+        function showMessage(message, type) {
+            const existingMessage = document.querySelector('.error, .success');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = type;
+            messageDiv.innerHTML = message;
+            
+            const activeTab = document.querySelector('.tab-content.active');
+            activeTab.insertBefore(messageDiv, activeTab.firstChild);
+            
+            setTimeout(() => {
+                if (messageDiv.parentNode) {
+                    messageDiv.remove();
+                }
+            }, 8000);
+        }
+    </script>
+</body>
+</html>
